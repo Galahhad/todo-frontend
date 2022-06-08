@@ -5,7 +5,7 @@ import styles from "../components/Main/Main.module.css";
 import { deleteTodo, patchTodo } from "../features/todos/todoSlice";
 import { Link } from "react-router-dom";
 
-const TodoItem = ({ item, dispatch }) => {
+const TodoItem = ({ item, dispatch, patchTodoLoader }) => {
   const [change, setChange] = useState(false);
 
   const handleChange = () => {
@@ -20,9 +20,10 @@ const TodoItem = ({ item, dispatch }) => {
   const handlePatch = () => {
     dispatch(patchTodo(item));
   };
+
   return (
     <div className={`${styles.todo} ${item.completed ? styles.completed : ""}`}>
-      <button className={styles.star_button} onClick={handlePatch}>
+      {!item.patching ? <button className={styles.star_button} onClick={handlePatch}>
         {!item.completed ? (
           <AiOutlineStar className={styles.todo_star} />
         ) : (
@@ -30,7 +31,9 @@ const TodoItem = ({ item, dispatch }) => {
             className={`${styles.todo_star} ${styles.complete_star}`}
           />
         )}
-      </button>
+      </button> : 
+      <div className={styles["pulsar"]}></div>
+      }
       <p>
         <Link to={`/todos/${item._id}`}>{item.title}</Link>
       </p>
@@ -38,6 +41,7 @@ const TodoItem = ({ item, dispatch }) => {
         className={styles.update_button}
         onClick={handleChange}
         onMouseLeave={() => setChange(false)}
+        disabled={item.deleting}
       >
         <HiPencilAlt className={styles.todo_update} />
         {change && <span onClick={handleDelete}>Удалить</span>}

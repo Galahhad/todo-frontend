@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { BiAddToQueue } from "react-icons/bi";
 import styles from "../components/Main/Main.module.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { postTodo } from "../features/todos/todoSlice";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -11,6 +11,7 @@ const Button = () => {
   const [headerText, setHeaderText] = useState("");
   const [text, setText] = useState("");
   const dispatch = useDispatch();
+  const postLoader = useSelector((state) => state.postLoader);
 
   const handleDown = () => {
     setDown(true);
@@ -36,7 +37,8 @@ const Button = () => {
         title: headerText,
         text: text,
       })
-    );
+      
+    )
     setText("");
     setHeaderText("");
     toast.success("Дело успешно добавлено!", {
@@ -63,6 +65,8 @@ const Button = () => {
             placeholder="Заголовок"
             onChange={handleHeaderText}
             value={headerText}
+            maxLength='50'
+            autoFocus
           />
           <textarea
             placeholder="Введите текст"
@@ -74,13 +78,16 @@ const Button = () => {
             <button onClick={handleCloseDown} className={styles.close}>
               Отменить
             </button>
-            <button
+            {!postLoader ? <button
               className={styles.add}
               disabled={!headerText.trim().length || !text.trim().length}
               onClick={handleAdd}
             >
               Добавить
             </button>
+            :
+            <div className={styles['line-wobble']}></div>
+            }
           </div>
           <ToastContainer
             position="top-center"

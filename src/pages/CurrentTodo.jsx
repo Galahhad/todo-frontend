@@ -10,6 +10,7 @@ const CurrentTodo = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const currentTodo = useSelector((state) => state.currentTodo);
+  const currentTodoLoader = useSelector((state) => state.currentTodoLoader);
 
   useEffect(() => {
     dispatch(getTodoById(id));
@@ -18,6 +19,12 @@ const CurrentTodo = () => {
   const handleFavorite = () => {
     dispatch(patchTodoInfo(currentTodo));
   };
+
+  if (currentTodoLoader) {
+    return (
+      <div className={styles['line-wobble']}></div>
+    );
+  }
 
   return (
     <div className={styles.modal_wrapper}>

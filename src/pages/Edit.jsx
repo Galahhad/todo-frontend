@@ -11,6 +11,7 @@ import { patchTodoTextInfo } from "../features/todos/todoSlice";
 const Edit = () => {
   const { id } = useParams();
   const todo = useSelector((state) => state.currentTodo);
+  const currentTodoLoader = useSelector((state) => state.currentTodoLoader);
 
   const [title, setTitle] = useState(todo?.title);
   const [text, setText] = useState(todo?.text);
@@ -25,6 +26,12 @@ const Edit = () => {
   //   setTitle();
   //   setText();
   // }, [todo.text, todo.title]);
+
+  if(currentTodoLoader) {
+    return (
+      <div className={styles['line-wobble']}></div>
+    )
+  }
 
   if (title === undefined || text === undefined) {
     return (
@@ -69,25 +76,24 @@ const Edit = () => {
           value={title}
           onChange={handleTitle}
           style={{ marginTop: "10px" }}
+          autoFocus
         />
         <textarea rows="15" value={text} onChange={handleText} />
       </div>
-      <button className={styles.close_button} onClick={handleClose}>
         <Link
+          className={styles.close_button}
           to={`/todos/${todo._id}`}
-          style={{ color: "inherit", textDecoration: "none" }}
+          onClick={handleClose}
         >
           Отменить
         </Link>
-      </button>
-      <button className={styles.edit} onClick={handlePatchTextInfo}>
         <Link
+          className={styles.edit}
           to={`/todos/${todo._id}`}
-          style={{ color: "inherit", textDecoration: "none" }}
+          onClick={handlePatchTextInfo}
         >
           Изменить
         </Link>
-      </button>
     </div>
   );
 };

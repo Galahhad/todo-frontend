@@ -3,6 +3,9 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 const initialState = {
   todos: [],
   currentTodo: {},
+  todosLoader: false,
+  currentTodoLoader: false,
+  postLoader: false
 };
 
 export const fetchTodos = createAsyncThunk(
@@ -135,19 +138,39 @@ export const todoSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(fetchTodos.pending, (state) => {
+        state.todosLoader = true
+      })
       .addCase(fetchTodos.fulfilled, (state, action) => {
         state.todos = action.payload;
-        state.loading = false;
+        state.todosLoader = false;
       })
-      .addCase(fetchTodos.pending, (state, action) => {
-        state.loading = true;
+      .addCase(deleteTodo.pending, (state, action) => {
+        state.todos.map((item) => {
+          if(item._id === action.meta.arg) {
+              item.deleting = true
+          }
+          return item
+        })
       })
       .addCase(deleteTodo.fulfilled, (state, action) => {
-        console.log(action);
         state.todos = state.todos.filter((item) => item._id !== action.payload);
+      })
+      .addCase(postTodo.pending, (state) => {
+        state.postLoader = true;
       })
       .addCase(postTodo.fulfilled, (state, action) => {
         state.todos.push(action.payload);
+        state.postLoader = false;
+      })
+      .addCase(patchTodo.pending, (state, action) => {
+        state.todos = state.todos.map((item) => {
+          console.log();
+          if(item._id === action.meta.arg._id) {
+             item.patching = true
+          }
+          return item
+        })
       })
       .addCase(patchTodo.fulfilled, (state, action) => {
         state.todos = state.todos.map((item) => {
@@ -157,12 +180,12 @@ export const todoSlice = createSlice({
           return item;
         });
       })
+      .addCase(getTodoById.pending, (state) => {
+        state.currentTodoLoader = true;
+      })
       .addCase(getTodoById.fulfilled, (state, action) => {
         state.currentTodo = action.payload;
-        state.loading = false;
-      })
-      .addCase(getTodoById.pending, (state) => {
-        state.loading = true;
+        state.currentTodoLoader = false;
       })
       .addCase(patchTodoInfo.fulfilled, (state, action) => {
         state.currentTodo = action.payload;

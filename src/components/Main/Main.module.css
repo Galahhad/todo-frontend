@@ -142,6 +142,14 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
+.update_button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.star_button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 .update_button:hover {
   background-color: rgb(228, 228, 228);
 }
@@ -197,6 +205,9 @@
   text-decoration: none;
   color: inherit;
   width: 100%;
+}
+.todo a:hover {
+    text-decoration: underline;
 }
 .edit {
   cursor: default;
@@ -335,5 +346,92 @@
   .routes a {
     width: fit-content;
     margin-top: 5px;
+  }
+}
+.line-wobble {
+  --uib-size: 80px;
+  --uib-speed: 1.55s;
+  --uib-color: black;
+  --uib-line-weight: 5px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--uib-line-weight);
+  width: var(--uib-size);
+  border-radius: calc(var(--uib-line-weight) / 2);
+  overflow: hidden;
+  transform: translate3d(0, 0, 0);
+  margin: auto;
+ }
+ 
+ .line-wobble::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: var(--uib-color);
+  opacity: 0.1;
+ }
+ 
+ .line-wobble::after {
+  content: '';
+  height: 100%;
+  width: 100%;
+  border-radius: calc(var(--uib-line-weight) / 2);
+  animation: wobble var(--uib-speed) ease-in-out infinite;
+  transform: translateX(-90%);
+  background-color: var(--uib-color);
+ }
+ 
+ @keyframes wobble {
+  0%,
+   100% {
+   transform: translateX(-90%);
+  }
+ 
+  50% {
+   transform: translateX(90%);
+  }
+ }
+ .pulsar {
+  --uib-size: 30px;
+  --uib-speed: 0.9s;
+  --uib-color: black;
+  position: relative;
+  height: var(--uib-size);
+  width: var(--uib-size);
+}
+
+.pulsar::before,
+.pulsar::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 3px;
+  height: 80%;
+  width: 80%;
+  border-radius: 50%;
+  background-color: var(--uib-color);
+  animation: pulse9173412 var(--uib-speed) ease-in-out infinite;
+  transform: scale(0);
+}
+
+.pulsar::after {
+  animation-delay: calc(var(--uib-speed) / -2);
+}
+
+@keyframes pulse9173412 {
+  0%,
+  100% {
+    transform: scale(0);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1);
+    opacity: 0.25;
   }
 }

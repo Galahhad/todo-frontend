@@ -7,10 +7,17 @@ import { fetchTodos } from "../features/todos/todoSlice";
 const Todos = () => {
   const todos = useSelector((state) => state.todos);
   const dispatch = useDispatch();
+  const todosLoader = useSelector((state) => state.todosLoader);
 
   useEffect(() => {
     dispatch(fetchTodos());
   }, [dispatch]);
+
+  if (todosLoader) {
+    return (
+      <div className={styles['line-wobble']}></div>
+    )
+  }
 
   return (
     <div className={styles.todos_wrapper}>
