@@ -40,7 +40,7 @@ const Button = () => {
       
     )
     setText("");
-    setHeaderText("");
+    setHeaderText('');
     toast.success("Дело успешно добавлено!", {
       position: "top-center",
       autoClose: 1500,
